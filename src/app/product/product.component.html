@@ -1,0 +1,829 @@
+<div *ngIf="lan==1">
+  <div>
+    <div class="bg-light p-4">
+      <nav class="navbar navbar-light bg-light">
+        <div class="dropdown" >
+          <a class="btn btn-outline-secondary dropdown-toggle" href="#"  id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Gelişmiş Sıralama
+          </a>
+          <ul class="dropdown-menu " aria-labelledby="navbarDropdown" style="width:150px !important;">
+            <li >
+              <label class="form-check-label dropdown-item " for="sortForName"  style="display: inline;font-size: 12px;">
+                İsim(A-Z)</label>
+                
+                <input class="form-check-input me-0 " type="checkbox" value=""  id="sortForName"(click)="sortForName()" >
+            </li>
+            <li >
+              <label class="form-check-label dropdown-item" for="sortForNameReverse" style="display: inline; font-size: 12px;" >İsim(Z-A)</label>
+                <input class="form-check-input " type="checkbox" value=""  id="sortForNameReverse" (click)="sortForNameReverse()" >
+            </li>
+            <li >
+              <label class="form-check-label dropdown-item" for="sortForPrice" style="display: inline; font-size: 12px;">
+                Fiyat: Artan</label>
+                <input class="form-check-input " type="checkbox" value="" id="sortForPrice" (click)="sortForPrice()" >
+            </li>
+            <li >
+            <label class="form-check-label dropdown-item" for="sortForPriceReverse" style="display: inline;font-size: 12px;">Fiyat Azalan</label>
+              <input class="form-check-input " type="checkbox" value="" id="sortForPriceReverse"  (click)="sortForPriceReverse()" >
+          </li>
+            <li >
+              
+              <label class="form-check-label dropdown-item" for="flexCheckChecked2" style="display: inline;font-size: 12px;">
+                Stok<10</label>
+                <input class="form-check-input " type="checkbox" value="" id="flexCheckChecked2" (click)="stockValue()" >
+            </li>
+            
+          </ul>
+        </div>
+        
+        <div class="btn-group" role="group"id="view">
+          Görünüm:
+          <button class="btn btn-white ms-1" type="button"(click)="onDisplayModeChange(1)"
+                        [ngClass]="{'btn-primary active': displayMode === 1}" >
+                        <i class="fa fa-th"></i>
+                        
+                        
+          </button>
+          <button class="btn btn-white" type="button"  (click)="onDisplayModeChange(2)"
+                        [ngClass]="{'btn-primary active': displayMode === 2}" >
+                        
+                        <i class="fa fa-th"></i>
+          </button>
+          <button class="btn btn-white" type="button"  (click)="onDisplayModeChange(3)"
+                        [ngClass]="{'btn-primary active': displayMode === 3}" >
+                        <i class="fa fa-list"></i>
+          </button>
+         </div>
+         <button type="button"class="btn btn-outline-secondary"  (click)="saveOptions()">Aramayı Kaydet</button>
+         <button type="button" class="btn btn-outline-secondary"  (click)="clearOptions()">Aramayı Temizle</button>
+         <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal2" >
+          <i class="fa fa-plus" style="font-size:35px;"></i>
+         </button>
+      </nav>
+    </div>
+  </div>
+  
+  
+  <div class="row" *ngIf="displayMode === 1"><div class="row">
+    <div class="mb-3 mt-2" id="searchBox">
+      <input  class="form-control" id="productName" placeholder="Ara.." value="" type="text" [(ngModel)]="filterText" />
+      
+      <div *ngIf="filterText" class="form-text ">Aradığınız Kelime: <strong>{{filterText}}</strong></div>
+    </div>
+    <ng-template #noProduct>
+      <div class="alert alert-primary" role="alert">
+        Ürün Yok
+      </div>
+    </ng-template>
+    
+    <div  *ngFor="let product of products  | productFilter:filterText; let i=index"  class="card mx-auto" id="productbox" style="width: 21rem;">
+      
+      <img src="http://localhost:3030/api/products/images/{{product.imageName}}" class="card-img-top" alt="...">
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">Ürün İsmi: {{product.name}}  </h5>
+        <p class="card-text">Fiyat: {{product.price | currency: "TRY":"TL":""}}</p>
+        <p class="card-text">Stok: {{product.stock}}</p>
+        <div class="d-flex flex-row justify-content-center mt-auto">
+          
+          <a data-bs-toggle="modal" data-bs-target="#exampleModal3" id="deleteButton" (click)="delete(product)" class="btn btn-sm btn-outline-danger col-4" >Sil</a>
+
+          <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Silme istediğinize emin misiniz?</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                  <a  class="btn btn-danger" (click)="delete(product)" href="/products">sil</a>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+
+         <!-- Button trigger modal -->
+          <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Güncelle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="basic-addon1">İsim: </span>
+                      <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="productNameInput">
+                    </div>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="basic-addon1">Fiyat: </span>
+                      <input type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="productPriceInput">
+                    </div>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="basic-addon1">Stok: </span>
+                      <input type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="productStockInput">
+                    </div>
+                    
+                    
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    <a  class="btn btn-primary" (click)="update()" href="/products">Değişiklikleri Kaydet</a>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          
+          <a  class="btn btn-sm btn-outline-warning col-4" data-bs-toggle="modal" data-bs-target="#exampleModal" id="updateButton"(click)="showUpdate(product)">Güncelle</a>
+          
+          <a data-bs-toggle="modal" data-bs-target="#exampleModal4" id="detailsButton" (click)="showDetails(product)" class="btn btn-sm btn-outline-success col-4" id="details" >Detaylar</a>
+          <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Detaylar</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div>{{product.name}}</div>
+                  <div>{{product.price}}</div>
+                  <div>{{product.stock}}</div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button> 
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+    
+    </div>
+  
+  </div></div>
+  <div *ngIf="displayMode===2" class="row">
+    <div class="mb-3 mt-2" id="searchBox">
+      <input  class="form-control" id="productName" placeholder="Ara.." value="" type="text" [(ngModel)]="filterText" />
+      
+      <div *ngIf="filterText" class="form-text ">Aradığınız Kelime: <strong>{{filterText}}</strong></div>
+    </div>
+    <div class="row">
+      <ng-template #noProduct>
+        <div class="alert alert-primary" role="alert">
+          Ürün Yok
+        </div>
+      </ng-template>
+      <div *ngFor="let product of products  | productFilter:filterText; let i=index"   id="productbox"  class="card mb-3" style="max-width: 50%;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="http://localhost:3030/api/products/images/{{product.imageName}}" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Ürün İsmi: {{product.name}}</h5>
+              <p class="card-text">Fiyat: {{product.price | currency: "TRY":"TL":""}}</p>
+              <p class="card-text"><small class="text-muted">Stok: {{product.stock}}</small></p>
+
+
+              <a data-bs-toggle="modal" data-bs-target="#exampleModal3" id="deleteButton" (click)="delete(product)" class="btn btn-sm btn-outline-danger col-4" >Sil</a>
+
+          <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Silme istediğinize emin misiniz?</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                  <a  class="btn btn-danger" (click)="delete(product)" href="/products">sil</a>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Güncelle</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">İsim: </span>
+                        <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="productNameInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Fiyat: </span>
+                        <input type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="productPriceInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Stok: </span>
+                        <input type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="productStockInput">
+                      </div>
+                      
+                      
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                      <a href="" class="btn btn-primary" (click)="update()" href="/products">Değişiklikleri Kaydet</a>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            
+            <a  class="btn btn-sm btn-outline-warning col-4" data-bs-toggle="modal" data-bs-target="#exampleModal" id="updateButton"(click)="showUpdate(product)">Güncelle</a>
+            <a data-bs-toggle="modal" data-bs-target="#exampleModal4" id="detailsButton" (click)="showDetails(product)" class="btn btn-sm btn-outline-success col-4" id="details" >Detaylar</a>
+          <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Detaylar</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div>{{product.name}}</div>
+                  <div>{{product.price}}</div>
+                  <div>{{product.stock}}</div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button> 
+                </div>
+              </div>
+            </div>
+          </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    
+    </div>
+  </div>
+  
+  <div *ngIf="displayMode===3" class="row">
+    <div class="mb-3 mt-2" id="searchBox">
+      <input  class="form-control" id="productName" placeholder="Ara.." value="" type="text" [(ngModel)]="filterText" />
+      
+      <div *ngIf="filterText" class="form-text ">Aradığınız Kelime: <strong>{{filterText}}</strong></div>
+    </div>
+    <div class="row">
+      <ng-template #noProduct>
+        <div class="alert alert-primary" role="alert">
+          Ürün yok
+        </div>
+      </ng-template>
+      <div *ngFor="let product of products  | productFilter:filterText; let i=index"   id="productbox"  class="card mb-3" style="max-width: 100%;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="http://localhost:3030/api/products/images/{{product.imageName}}" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Ürün İsmi: {{product.name}}</h5>
+              <p class="card-text">Fiyat: {{product.price | currency:"TRY":"TL":""}}</p>
+              <p class="card-text text-muted" > Stock: {{product.stock}}</p>
+
+
+              <a data-bs-toggle="modal" data-bs-target="#exampleModal3" id="deleteButton" (click)="delete(product)" class="btn btn-sm btn-outline-danger col-4" >Sil</a>
+
+          <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Silme istediğinize emin misiniz?</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                  <a  class="btn btn-danger" (click)="delete(product)" href="/products">sil</a>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Güncelle</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">İsim: </span>
+                        <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="productNameInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Fiyat: </span>
+                        <input type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="productPriceInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Stok: </span>
+                        <input type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="productStockInput">
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                      <a href="" class="btn btn-primary" (click)="update()" href="/products">Değişiklikleri Kaydet</a>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            
+            <a  class="btn btn-sm btn-outline-warning col-4" data-bs-toggle="modal" data-bs-target="#exampleModal" id="updateButton"(click)="showUpdate(product)">Güncelle</a>
+            
+            <a data-bs-toggle="modal" data-bs-target="#exampleModal4" id="detailsButton" (click)="showDetails(product)" class="btn btn-sm btn-outline-success col-4" id="details" >Detaylar</a>
+          <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Detaylar</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div>{{product.name}}</div>
+                  <div>{{product.price}}</div>
+                  <div>{{product.stock}}</div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button> 
+                </div>
+              </div>
+            </div>
+          </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    
+    </div>
+  </div>
+  
+  <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Yeni Ürün Ekle</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">İsim: </span>
+            <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="addNameInput">
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Fiyat: </span>
+            <input type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="addPriceInput">
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Stok: </span>
+            <input type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="addStockInput">
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Resim Url: </span>
+            <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="addImageInput">
+          </div>
+          
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+          <a href="" class="btn btn-primary" (click)="addProduct()" href="/products">Ekle</a>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="lan==2">
+  <div >
+    <div class="bg-light p-4">
+      <nav class="navbar navbar-light bg-light">
+        <div class="dropdown" >
+          <a class="btn btn-outline-secondary dropdown-toggle" href="#"  id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Advanced Sorting
+          </a>
+          <ul class="dropdown-menu " aria-labelledby="navbarDropdown" style=" width:150px !important;">
+          
+            <li >
+              <label class="form-check-label dropdown-item " for="sortForName"  style="display: inline;font-size: 12px;">
+                Name(A-Z)</label>
+                
+                <input class="form-check-input me-0 " type="checkbox" value=""  id="sortForName"(click)="sortForName()" >
+            </li>
+            <li >
+              <label class="form-check-label dropdown-item" for="sortForNameReverse" style="display: inline; font-size: 12px;" >Name(Z-A)</label>
+                <input class="form-check-input " type="checkbox" value=""  id="sortForNameReverse" (click)="sortForNameReverse()" >
+            </li>
+            <li >
+              <label class="form-check-label dropdown-item" for="sortForPrice" style="display: inline; font-size: 12px;">
+                Price:Low to High</label>
+                <input class="form-check-input " type="checkbox" value="" id="sortForPrice" (click)="sortForPrice()" >
+            </li>
+            <li >
+            <label class="form-check-label dropdown-item" for="sortForPriceReverse" style="display: inline;font-size: 12px;">Price: High to Low</label>
+              <input class="form-check-input " type="checkbox" value="" id="sortForPriceReverse"  (click)="sortForPriceReverse()" >
+          </li>
+            <li >
+              
+              <label class="form-check-label dropdown-item" for="flexCheckChecked2" style="display: inline;font-size: 12px;">
+                Stock<10</label>
+                <input class="form-check-input " type="checkbox" value="" id="flexCheckChecked2" (click)="stockValue()" >
+            </li>
+            
+          </ul>
+        </div>
+        
+        <div class="btn-group" role="group"id="view">
+          View: 
+          <button class="btn btn-white" type="button"(click)="onDisplayModeChange(1)"
+                        [ngClass]="{'btn-primary active': displayMode === 1}" >
+                        <i class="fa fa-th"></i>
+                        
+                        
+          </button>
+          <button class="btn btn-white" type="button"  (click)="onDisplayModeChange(2)"
+                        [ngClass]="{'btn-primary active': displayMode === 2}" >
+                        
+                        <i class="fa fa-th"></i>
+          </button>
+          <button class="btn btn-white" type="button"  (click)="onDisplayModeChange(3)"
+                        [ngClass]="{'btn-primary active': displayMode === 3}" >
+                        <i class="fa fa-list"></i>
+          </button>
+         </div>
+         <button type="button"class="btn btn-outline-secondary"  (click)="saveOptions()">Save Search Options</button>
+         <button type="button" class="btn btn-outline-secondary"  (click)="clearOptions()">Clean Search Options</button>
+         <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal2" (click)="addProduct()">
+          <i class="fa fa-plus" style="font-size:35px;" ></i>
+         </button>
+      </nav>
+    </div>
+  </div>
+
+  
+  <div class="row" *ngIf="displayMode === 1"><div class="row">
+    <div class="mb-3 mt-2" id="searchBox">
+      <input  class="form-control" id="productName" placeholder="Search.." value="" type="text" [(ngModel)]="filterText" />
+      
+      <div *ngIf="filterText" class="form-text ">You are searching <strong>{{filterText}}</strong></div>
+    </div>
+    <ng-template #noProduct>
+      <div class="alert alert-primary" role="alert">
+        There is No Product
+      </div>
+    </ng-template>
+    
+    <div  *ngFor="let product of products  | productFilter:filterText; let i=index"  class="card mx-auto" id="productbox" style="width: 21rem;">
+      
+      <img src="http://localhost:3030/api/products/images/{{product.imageName}}" class="card-img-top" alt="...">
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">Product Name: {{product.name}} </h5>
+        <p class="card-text">Price: {{product.price | currency}} </p>
+        <p class="card-text">Stock: {{product.stock}}</p>
+        <div class="d-flex flex-row justify-content-center mt-auto">
+          
+          <a data-bs-toggle="modal" data-bs-target="#exampleModal3" id="deleteButton" (click)="delete(product)" class="btn btn-sm btn-outline-danger col-4" >Delete</a>
+
+          <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
+                  <a  class="btn btn-danger" (click)="delete(product)" href="/products">delete</a>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+         <!-- Button trigger modal -->
+          <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="basic-addon1">Name: </span>
+                      <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="productNameInput">
+                    </div>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="basic-addon1">Price: </span>
+                      <input type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="productPriceInput">
+                    </div>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="basic-addon1">Stock: </span>
+                      <input type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="productStockInput">
+                    </div>
+                    
+                    
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="" class="btn btn-primary" (click)="update()" href="/products">Save changes</a>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          
+          <a  class="btn btn-sm btn-outline-warning  col-4" data-bs-toggle="modal" data-bs-target="#exampleModal" id="updateButton"(click)="showUpdate(product)">Update</a>
+          <a data-bs-toggle="modal" data-bs-target="#exampleModal4" id="detailsButton" (click)="showDetails(product)" class="btn btn-sm btn-outline-success col-4" id="details" >Detail</a>
+          <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Details</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div>{{product.name}}</div>
+                  <div>{{product.price}}</div>
+                  <div>{{product.stock}}</div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button> 
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+      </div>
+    
+    </div>
+  
+  </div></div>
+  <div *ngIf="displayMode===2" class="row">
+    <div class="mb-3 mt-2" id="searchBox">
+      <input  class="form-control" id="productName" placeholder="Search.." value="" type="text" [(ngModel)]="filterText" />
+      
+      <div *ngIf="filterText" class="form-text ">You are searching <strong>{{filterText}}</strong></div>
+    </div>
+    <div class="row">
+      <ng-template #noProduct>
+        <div class="alert alert-primary" role="alert">
+          There is No Product
+        </div>
+      </ng-template>
+      <div *ngFor="let product of products  | productFilter:filterText; let i=index"   id="productbox"  class="card mb-3" style="max-width: 50%;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="http://localhost:3030/api/products/images/{{product.imageName}}" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Product Name: {{product.name}}</h5>
+              <p class="card-text">Price: {{product.price | currency}}</p>
+              <p class="card-text text-muted"> Stock: {{product.stock}}</p>
+
+
+              <a data-bs-toggle="modal" data-bs-target="#exampleModal3" id="deleteButton" (click)="delete(product)" class="btn btn-sm btn-outline-danger col-4" >Delete</a>
+
+              <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <a  class="btn btn-danger" (click)="delete(product)" href="/products">Delete</a>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Update</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Name: </span>
+                        <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="productNameInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Price: </span>
+                        <input type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="productPriceInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Stock: </span>
+                        <input type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="productStockInput">
+                      </div>
+                      
+                      
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <a href="" class="btn btn-primary" (click)="update()" href="/products">Save changes</a>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            
+            <a  class="btn btn-sm btn-outline-warning col-4" data-bs-toggle="modal" data-bs-target="#exampleModal" id="updateButton"(click)="showUpdate(product)">Update</a>
+            <a data-bs-toggle="modal" data-bs-target="#exampleModal4" id="detailsButton" (click)="showDetails(product)" class="btn btn-sm btn-outline-success col-4" id="details" >detail</a>
+          <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">details</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div>{{product.name}}</div>
+                  <div>{{product.price}}</div>
+                  <div>{{product.stock}}</div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close </button> 
+                </div>
+              </div>
+            </div>
+          </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    
+    </div>
+  </div>
+  
+  <div *ngIf="displayMode===3" class="row">
+    <div class="mb-3 mt-2" id="searchBox">
+      <input  class="form-control" id="productName" placeholder="Search.." value="" type="text" [(ngModel)]="filterText" />
+      
+      <div *ngIf="filterText" class="form-text ">You are searching <strong>{{filterText}}</strong></div>
+    </div>
+    <div class="row">
+      <ng-template #noProduct>
+        <div class="alert alert-primary" role="alert">
+          There is No Product
+        </div>
+      </ng-template>
+      <div *ngFor="let product of products  | productFilter:filterText; let i=index"   id="productbox"  class="card mb-3" style="max-width: 100%;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="http://localhost:3030/api/products/images/{{product.imageName}}" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Product Name: {{product.name}}</h5>
+              <p class="card-text">Price: {{product.price | currency}}</p>
+              <p class="card-text text-muted"> Stock: {{product.stock}}</p>
+
+
+              <a data-bs-toggle="modal" data-bs-target="#exampleModal3" id="deleteButton" (click)="delete(product)" class="btn btn-sm btn-outline-danger col-4" >Delete</a>
+
+          <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
+                  <a  class="btn btn-danger" (click)="delete(product)" href="/products">delete</a>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Update</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Name: </span>
+                        <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="productNameInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Price: </span>
+                        <input type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="productPriceInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Stock: </span>
+                        <input type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="productStockInput">
+                      </div>
+                      
+                      
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <a href="" class="btn btn-primary" (click)="update()" href="/products">Save changes</a>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            
+            <a  class="btn btn-sm btn-outline-warning col-4" data-bs-toggle="modal" data-bs-target="#exampleModal" id="updateButton"(click)="showUpdate(product)">Update</a>
+            <a data-bs-toggle="modal" data-bs-target="#exampleModal4" id="detailsButton" (click)="showDetails(product)" class="btn btn-sm btn-outline-success col-4" id="details" >detail</a>
+          <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">details</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div>{{product.name}}</div>
+                  <div>{{product.price}}</div>
+                  <div>{{product.stock}}</div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close </button> 
+                </div>
+              </div>
+            </div>
+          </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    
+    </div>
+  </div>
+  
+  <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add New Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Name: </span>
+            <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="addNameInput">
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Price: </span>
+            <input type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="addPriceInput">
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Stock: </span>
+            <input type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="addStockInput">
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Image Url: </span>
+            <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="addImageInput">
+          </div>
+          
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <a href="" class="btn btn-primary" (click)="addProduct()" href="/products">Add</a>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+</div>

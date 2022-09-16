@@ -1,0 +1,77 @@
+<div class="row">
+  
+</div>
+<header class="navbar navbar-light  bg-light flex-md-nowrap p-0 shadow">
+<div class="btn-group nav-link pl-3 ml-auto text-right"  role="group" id="view" >
+          
+  <button class="btn btn-white" type="button"(click)="language(1)" id="lan1"
+                [ngClass]="{'btn-primary active': lang === 1}" >
+                <img src="https://i.ibb.co/WyM5b34/tr.png" alt="" style="width:20px;" >
+                
+                
+  </button>
+  <button class="btn btn-white" type="button"  (click)="language(2)" id="lan2"
+                [ngClass]="{'btn-primary active': lang === 2}" >
+                
+                <img src="https://freepikpsd.com/file/2019/10/eng-png-Transparent-Images.png" alt="" style="width: 20px;">
+  </button>
+  
+ </div>
+</header>
+<nav >
+<div *ngIf="lang===1">
+  <header class="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0 shadow">
+    <img src="https://cdn.kariyer.net/UploadFiles/Clients/Logolar/253813_231167.jpg" alt="" class="d-inline-block align-top ms-4 " width="150" height="30">
+    
+      
+    <a *ngIf="isLoggedIn()==true" class="nav-link px-3" class="nav-link px-3" routerLink="index">Anasayfa</a>
+    <a *ngIf="isLoggedIn()==true" class="nav-link px-3"class="nav-link px-4"routerLink="products" href="#"routerLink="products" >Ürünler</a>
+    <a *ngIf="isLoggedIn()==true" class="nav-link px-3"class="nav-link px-4"routerLink="categories" href="#"routerLink="categories">Kategoriler</a>
+    <a *ngIf="isLoggedIn()==true" class="nav-link px-3"class="nav-link px-4" routerLink="employees" href="#" routerLink="employees">Çalışanlar</a>
+    <a *ngIf="isLoggedIn()==true" class="nav-link px-3"class="nav-link px-4" routerLink="contactus" href="#" routerLink="contactus">İletişim</a>
+    
+        
+    <div class="navbar-nav">
+      
+      <div class="nav-item text-nowrap">
+        
+          
+        
+        <a *ngIf="isLoggedIn()==true" (click)="logOut()"  class="nav-link px-3" >Çıkış</a>
+        
+        
+      </div>
+    </div>
+  </header>
+  
+</div>
+<div *ngIf="lang===2">
+  <header class="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0 shadow">
+    <img src="https://cdn.kariyer.net/UploadFiles/Clients/Logolar/253813_231167.jpg" alt="" class="d-inline-block align-top ms-4 " width="150" height="30">
+    
+      
+    <a *ngIf="isLoggedIn()==true" class="nav-link px-3" class="nav-link px-3" routerLink="index">Index</a>
+    <a *ngIf="isLoggedIn()==true" class="nav-link px-3"class="nav-link px-4"routerLink="products" href="#"routerLink="products" >Product</a>
+    <a *ngIf="isLoggedIn()==true" class="nav-link px-3"class="nav-link px-4"routerLink="categories" href="#"routerLink="categories">Categories</a>
+    <a *ngIf="isLoggedIn()==true" class="nav-link px-3"class="nav-link px-4" routerLink="employees" href="#" routerLink="employees">Employees</a>
+    <a *ngIf="isLoggedIn()==true" class="nav-link px-3"class="nav-link px-4" routerLink="contactus" href="#" routerLink="contactus">Contact Us</a>
+    
+    
+        
+    <div class="navbar-nav">
+
+
+      
+      
+      <div class="nav-item text-nowrap">
+        
+          
+        
+        <a *ngIf="isLoggedIn()==true" (click)="logOut()"  class="nav-link px-3" >LogOut</a>
+        
+        
+      </div>
+    </div>
+  </header>
+</div>
+</nav>

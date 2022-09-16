@@ -1,0 +1,368 @@
+{
+	"info": {
+		"_postman_id": "d14485c0-84cf-4fd1-9343-b9a3194e108b",
+		"name": "Nortwind-BackEnd",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "4741071"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login as an existing user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"kkaplan\",\r\n    \"password\": \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3030/api/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "register as a new user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Kamil\",\r\n    \"lastName\": \"KAPLAN\",\r\n    \"username\": \"kkaplan\",\r\n    \"password\": \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3030/api/auth/register"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "get all products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3030/api/products"
+					},
+					"response": []
+				},
+				{
+					"name": " get all products with a 3sec delay",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3030/api/products/delayed"
+					},
+					"response": []
+				},
+				{
+					"name": "get product #7",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3030/api/products/7"
+					},
+					"response": []
+				},
+				{
+					"name": "get product #7 with a 3sec delay",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3030/api/products/delayed/7"
+					},
+					"response": []
+				},
+				{
+					"name": "add a new product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Kayısı\",\r\n    \"price\": 20,\r\n    \"stock\": 500,\r\n    \"imageName\": \"3.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3030/api/products"
+					},
+					"response": []
+				},
+				{
+					"name": "update product #78",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Kayısııııı\",\r\n    \"price\": 20,\r\n    \"stock\": 500,\r\n    \"imageName\": \"3.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3030/api/products/78"
+					},
+					"response": []
+				},
+				{
+					"name": "delete product #7",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:3030/api/products/7"
+					},
+					"response": []
+				},
+				{
+					"name": "get product #7's image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3030/api/products/images/3.jpg"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "get all categories",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJmaXJzdE5hbWUiOiJLYW1pbCIsImxhc3ROYW1lIjoiS2FwbGFuIiwidXNlcm5hbWUiOiJra2FwbGFuIn0sImlhdCI6MTY1OTUxNDI0MCwiZXhwIjoxNjU5NTMyMjQwfQ.pagimdMpjg9rhLsfWl_3n2u8YFkkAZc-ku4dmjiPe9Y"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3030/api/categories"
+					},
+					"response": []
+				},
+				{
+					"name": "get category #7",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJmaXJzdE5hbWUiOiJLYW1pbCIsImxhc3ROYW1lIjoiS2FwbGFuIiwidXNlcm5hbWUiOiJra2FwbGFuIn0sImlhdCI6MTY1OTUxNDI0MCwiZXhwIjoxNjU5NTMyMjQwfQ.pagimdMpjg9rhLsfWl_3n2u8YFkkAZc-ku4dmjiPe9Y"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3030/api/categories/7"
+					},
+					"response": []
+				},
+				{
+					"name": "add a new category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJmaXJzdE5hbWUiOiJLYW1pbCIsImxhc3ROYW1lIjoiS2FwbGFuIiwidXNlcm5hbWUiOiJra2FwbGFuIn0sImlhdCI6MTY1OTUxNDI0MCwiZXhwIjoxNjU5NTMyMjQwfQ.pagimdMpjg9rhLsfWl_3n2u8YFkkAZc-ku4dmjiPe9Y"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"category\",\r\n    \"description\": \"category description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3030/api/categories"
+					},
+					"response": []
+				},
+				{
+					"name": "update category #7",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJmaXJzdE5hbWUiOiJLYW1pbCIsImxhc3ROYW1lIjoiS2FwbGFuIiwidXNlcm5hbWUiOiJra2FwbGFuIn0sImlhdCI6MTY1OTUxNDI0MCwiZXhwIjoxNjU5NTMyMjQwfQ.pagimdMpjg9rhLsfWl_3n2u8YFkkAZc-ku4dmjiPe9Y"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Produce 7\",\r\n    \"description\": \"Dried fruit and bean curd 7\",\r\n    \"imageName\": \"7.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3030/api/categories/7"
+					},
+					"response": []
+				},
+				{
+					"name": "delete category #7",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJmaXJzdE5hbWUiOiJLYW1pbCIsImxhc3ROYW1lIjoiS2FwbGFuIiwidXNlcm5hbWUiOiJra2FwbGFuIn0sImlhdCI6MTY1OTUxNDI0MCwiZXhwIjoxNjU5NTMyMjQwfQ.pagimdMpjg9rhLsfWl_3n2u8YFkkAZc-ku4dmjiPe9Y"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:3030/api/categories/7"
+					},
+					"response": []
+				},
+				{
+					"name": "get category #1's image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJmaXJzdE5hbWUiOiJLYW1pbCIsImxhc3ROYW1lIjoiS2FwbGFuIiwidXNlcm5hbWUiOiJra2FwbGFuIn0sImlhdCI6MTY1OTUxNDI0MCwiZXhwIjoxNjU5NTMyMjQwfQ.pagimdMpjg9rhLsfWl_3n2u8YFkkAZc-ku4dmjiPe9Y"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3030/api/categories/images/1.jpg"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employees",
+			"item": [
+				{
+					"name": "get all employees",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3030/api/employees"
+					},
+					"response": []
+				},
+				{
+					"name": "get employee #7",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3030/api/employees/7"
+					},
+					"response": []
+				},
+				{
+					"name": "add a new employee",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Kamil\",\r\n    \"lastName\": \"KAPLAN\",\r\n    \"title\": \"Software Developer\",\r\n    \"country\": \"Turkey\",\r\n    \"city\": \"İstanbul\",\r\n    \"birthDate\": \"1994-05-03\",\r\n    \"imageName\": \"112.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3030/api/employees"
+					},
+					"response": []
+				},
+				{
+					"name": "update employee #7",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Teach Career\",\r\n    \"lastName\": \"Angular\",\r\n    \"title\": \"Kariyer.net\",\r\n    \"country\": \"Turkey\",\r\n    \"city\": \"İstanbul\",\r\n    \"birthDate\": \"1960-05-29\",\r\n    \"imageName\": \"1.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3030/api/employees/7"
+					},
+					"response": []
+				},
+				{
+					"name": "delete employee #7",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:3030/api/employees/7"
+					},
+					"response": []
+				},
+				{
+					"name": "get employee #8's image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3030/api/employees/images/8.jpg"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contact Us",
+			"item": [
+				{
+					"name": "get all contact-us messages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3030/api/contact-us"
+					},
+					"response": []
+				},
+				{
+					"name": " add a new contact-us message",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"İlyas Burak\",\r\n    \"phone\": \"0521234567\",\r\n    \"email\": \"ilyasbural@gmail.com\",\r\n    \"message\": \"REST API!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3030/api/contact-us"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

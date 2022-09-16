@@ -1,0 +1,14 @@
+* {box-sizing:border-box}
+
+#special-card{
+ 
+  border: 5px solid #ddd;
+  margin-top: 2%;
+  
+ 
+}
+.namesurname{
+  padding: 3%;
+  font-size:xx-large;
+  padding-left: 2px;
+}

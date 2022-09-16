@@ -1,0 +1,1051 @@
+<div *ngIf="lan==1">
+  <div >
+    <div class="bg-light p-4">
+      <nav class="navbar navbar-light bg-light">
+        <div class="dropdown " id="wgtmsr">
+          <a class="btn btn-outline-secondary dropdown-toggle" href="#"  id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
+            Gelişmiş Sıralama
+          </a>
+          <ul class="dropdown-menu  " aria-labelledby="navbarDropdown" style="width:150px !important;">
+            <li >
+              <label class="form-check-label dropdown-item " for="sortForNameEmployee"  style="display: inline;font-size: 12px;">
+                İsim(A-Z)</label>
+                
+                <input class="form-check-input me-0 " type="checkbox" value=""  id="sortForNameEmployee"(click)="sortForName()" >
+            </li>
+            <li >
+              <label class="form-check-label dropdown-item" for="sortForNameReverseEmployee" style="display: inline; font-size: 12px;" >İsim(Z-A)</label>
+                <input class="form-check-input " type="checkbox" value=""  id="sortForNameReverseEmployee" (click)="sortForNameReverse()" >
+            </li>
+            <li >
+              <label class="form-check-label dropdown-item" for="sortForTitle" style="display: inline; font-size: 12px;">
+                Ünvan(A-Z)</label>
+                <input class="form-check-input " type="checkbox" value="" id="sortForTitle" (click)="sortForTitle()" >
+            </li>
+            <li >
+            <label class="form-check-label dropdown-item" for="sortForTitleReverse" style="display: inline;font-size: 12px;">Ünvan(Z-A)</label>
+              <input class="form-check-input " type="checkbox" value="" id="sortForTitleReverse"  (click)="sortForTitleReverse()" >
+          </li>
+          <li >
+            <label class="form-check-label dropdown-item" for="sortForBirthDate" style="display: inline;font-size: 12px;">Doğum Tarihi</label>
+              <input class="form-check-input " type="checkbox" value="" id="sortForBirthDate"  (click)="sortForBirthDate()" >
+          </li>
+          <li >
+            <label class="form-check-label dropdown-item" for="sortForCountry" style="display: inline;font-size: 12px;">Ülke</label>
+              <input class="form-check-input " type="checkbox" value="" id="sortForCountry"  (click)="sortForCountry()" >
+          </li>
+          <li >
+            <label class="form-check-label dropdown-item" for="sortForCity" style="display: inline;font-size: 12px;">Şehir</label>
+              <input class="form-check-input " type="checkbox" value="" id="sortForCity"  (click)="sortForCity()" >
+          </li>
+            
+            
+          </ul>
+        </div>
+        
+        <div class="btn-group" role="group" id="view">
+          Görünüm:
+          <button class="btn btn-white" type="button"(click)="onDisplayModeChange(1)"
+                        [ngClass]="{'btn-primary active': displayMode === 1}" >
+                        <i class="fa fa-th"></i>
+                        
+                        
+          </button>
+          <button class="btn btn-white" type="button"  (click)="onDisplayModeChange(2)"
+                        [ngClass]="{'btn-primary active': displayMode === 2}" >
+                        
+                        <i class="fa fa-th"></i>
+          </button>
+          <button class="btn btn-white" type="button"  (click)="onDisplayModeChange(3)"
+                        [ngClass]="{'btn-primary active': displayMode === 3}" >
+                        <i class="fa fa-list"></i>
+          </button>
+         </div>
+         <button type="button"class="btn btn-outline-secondary" (click)="saveOptions()">Aramayı Kaydet</button>
+         <button type="button" class="btn btn-outline-secondary" (click)="clearOptions()">Aramayı Temizle</button>
+         <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal2" >
+          <i class="fa fa-plus" style="font-size:35px;" ></i>
+         </button>
+      </nav>
+    </div>
+  </div>
+
+  <div *ngIf="displayMode===1" class="row">
+  <div class="mb-3 mt-2" id="searchBox">
+      <input  class="form-control" id="productName" placeholder="Search.." [(ngModel)]="filterText"/>
+      <div *ngIf="filterText" class="form-text">Aradığınız Kelime: <strong>{{filterText}}</strong></div>
+    </div>
+    <div class="row">
+      <ng-template #noProduct>
+        <div class="alert alert-primary" role="alert">
+          Ürün Yok
+        </div>
+      </ng-template>
+      <div *ngFor="let employee of employees | employeeFilter:filterText; let i=index" class="card mx-auto" id="productbox" style="width: 21rem;">
+        <div class="row d-flex align-items-center justify-content-center" >
+          <img src="http://localhost:3030/api/employees/images/{{employee.imageName}}" class="img-thumbnail col-6" alt="...">
+          <div *ngIf="employee.title=== 'Sales Representative'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #ffcc00 !important;">
+            {{employee.title}}
+          </div>
+          <div *ngIf="employee.title=== 'Vice President, Sales'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #cc3300 !important;">
+            {{employee.title}}
+          </div>
+          <div *ngIf="employee.title=== 'Sales Manager'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #15C5F0 !important;">
+            {{employee.title}}
+          </div>
+          <div *ngIf="employee.title=== 'Inside Sales Coordinator'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #0D6EFD !important;">
+            {{employee.title}}
+          </div>
+        </div>
+        
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{employee.firstName}} {{employee.lastName}}  </h5>
+          
+          <p class="card-text">{{employee.country}}</p>
+          <p class="card-text">{{employee.city}}</p>
+          <p class="card-text">{{employee.birthDate}}</p>
+          <div class="d-flex flex-row justify-content-center mt-auto">
+          
+            <a data-bs-toggle="modal" data-bs-target="#exampleModal3" id="deleteButton" (click)="delete(employee)" class="btn btn-sm btn-outline-danger col-4" >Sil</a>
+
+            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Silmek istediğinize emin misiniz?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    <a  class="btn btn-danger" (click)="delete(employee)" href="/products">sil</a>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+           <!-- Button trigger modal -->
+            <!-- Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Güncelle</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">İsim: </span>
+                        <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="employeeFirstnameInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Soyisim: </span>
+                        <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="employeeLastnameInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Ünvan: </span>
+                        <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeTitleInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Ülke: </span>
+                        <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeCountryInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Şehir: </span>
+                        <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeCityInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Doğum Tarihi: </span>
+                        <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeBirthDateInput">
+                      </div>
+                      
+                      
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                      <a  class="btn btn-primary" (click)="update()" href="/employees" >Değişiklikleri Kaydet</a>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            
+            <a  class="btn btn-sm btn-outline-warning col-4" data-bs-toggle="modal" data-bs-target="#exampleModal" id="updateButton"(click)="showUpdate(employee)">Güncelle</a>
+            
+            <a data-bs-toggle="modal" data-bs-target="#exampleModal4" id="detailsButton" (click)="showDetails(employee)" class="btn btn-sm btn-outline-success col-4" id="details" >Detaylar</a>
+          <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Detaylar</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div>{{employee.firstName}}</div>
+                  <div>{{employee.lastName}}</div>
+                  <div>{{employee.country}}</div>
+                  <div>{{employee.city}}</div>
+                  <div>{{employee.birthDate}}</div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button> 
+                </div>
+              </div>
+            </div>
+          </div>
+            
+            
+          </div>
+          
+        </div>
+      </div>
+    
+    </div>
+  </div>
+  
+    <div *ngIf="displayMode===2" class="row">
+      <div class="mb-3 mt-2" id="searchBox">
+        <input  class="form-control" id="productName" placeholder="Search.." [(ngModel)]="filterText"/>
+        <div *ngIf="filterText" class="form-text">Aradığınız Kelime <strong>{{filterText}}</strong></div>
+      </div>
+      <div class="row">
+        <ng-template #noProduct>
+          <div class="alert alert-primary" role="alert">
+            Ürün Yok
+          </div>
+        </ng-template>
+        <div *ngFor="let employee of employees  | employeeFilter:filterText; let i=index"   id="productbox"  class="card mb-3" style="max-width: 50%;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <div class="row d-flex align-items-center justify-content-center" >
+                <img src="http://localhost:3030/api/employees/images/{{employee.imageName}}" class="img-thumbnail col-6" alt="...">
+                <div *ngIf="employee.title=== 'Sales Representative'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #ffcc00 !important;">
+                  {{employee.title}}
+                </div>
+                <div *ngIf="employee.title=== 'Vice President, Sales'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #cc3300 !important;">
+                  {{employee.title}}
+                </div>
+                <div *ngIf="employee.title=== 'Sales Manager'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #15C5F0 !important;">
+                  {{employee.title}}
+                </div>
+                <div *ngIf="employee.title=== 'Inside Sales Coordinator'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #0D6EFD !important;">
+                  {{employee.title}}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{employee.firstName}} {{employee.lastName}}  </h5>
+                
+                <p class="card-text">{{employee.country}}</p>
+                <p class="card-text">{{employee.city}}</p>
+                <p class="card-text">{{employee.birthDate}}</p>
+                
+                <a data-bs-toggle="modal" data-bs-target="#exampleModal3" id="deleteButton" (click)="delete(employee)" class="btn btn-sm btn-outline-danger col-4" >Sil</a>
+
+                <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Silmek istediğinize emin misiniz?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                        <a  class="btn btn-danger" (click)="delete(employee)" href="/products">sil</a>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Güncelle</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">İsim: </span>
+                          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="employeeFirstnameInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Soyisim: </span>
+                          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="employeeLastnameInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Ünvan: </span>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeTitleInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Ülke: </span>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeCountryInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Şehir: </span>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeCityInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Doğum Tarihi: </span>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeBirthDateInput">
+                        </div>
+                        
+                        
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                        <a href="" class="btn btn-primary" (click)="update()" href="/employees">Değişiklikleri Kaydet</a>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              
+              <a  class="btn btn-sm btn-outline-warning col-4" data-bs-toggle="modal" data-bs-target="#exampleModal" id="updateButton"(click)="showUpdate(employee)">Güncelle</a>
+              
+              <a data-bs-toggle="modal" data-bs-target="#exampleModal4" id="detailsButton" (click)="showDetails(employee)" class="btn btn-sm btn-outline-success col-4" id="details" >Detaylar</a>
+          <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Detaylar</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div>{{employee.firstName}}</div>
+                  <div>{{employee.lastName}}</div>
+                  <div>{{employee.country}}</div>
+                  <div>{{employee.city}}</div>
+                  <div>{{employee.birthDate}}</div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button> 
+                </div>
+              </div>
+            </div>
+          </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      
+      </div>
+    </div>
+  
+  
+    <div *ngIf="displayMode===3" class="row">
+      <div class="mb-3 mt-2" id="searchBox">
+        <input  class="form-control" id="productName" placeholder="Search.." [(ngModel)]="filterText"/>
+        <div *ngIf="filterText" class="form-text">Aradığınız Kelime: <strong>{{filterText}}</strong></div>
+      </div>
+      <div class="row">
+        <ng-template #noProduct>
+          <div class="alert alert-primary" role="alert">
+            Ürün Yok
+          </div>
+        </ng-template>
+        <div *ngFor="let employee of employees  | employeeFilter:filterText; let i=index"   id="productbox"  class="card mb-3" style="max-width: 100%;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <div class="row d-flex align-items-center justify-content-center" >
+                <img src="http://localhost:3030/api/employees/images/{{employee.imageName}}" class="img-thumbnail col-6" alt="...">
+                <div *ngIf="employee.title=== 'Sales Representative'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #ffcc00 !important;">
+                  {{employee.title}}
+                </div>
+                <div *ngIf="employee.title=== 'Vice President, Sales'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #cc3300 !important;">
+                  {{employee.title}}
+                </div>
+                <div *ngIf="employee.title=== 'Sales Manager'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #15C5F0 !important;">
+                  {{employee.title}}
+                </div>
+                <div *ngIf="employee.title=== 'Inside Sales Coordinator'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #0D6EFD !important;">
+                  {{employee.title}}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{employee.firstName}} {{employee.lastName}}  </h5>
+                
+                <p class="card-text">{{employee.country}}</p>
+                <p class="card-text">{{employee.city}}</p>
+                <p class="card-text">{{employee.birthDate}}</p>
+                
+                 <a data-bs-toggle="modal" data-bs-target="#exampleModal3" id="deleteButton" (click)="delete(employee)" class="btn btn-sm btn-outline-danger col-4" >Sil</a>
+
+            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Silmek istediğinize emin misiniz?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    <a  class="btn btn-danger" (click)="delete(employee)" href="/products">sil</a>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Güncelle</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">İsim: </span>
+                          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="employeeFirstnameInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Soyisim: </span>
+                          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="employeeLastnameInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Ünvan: </span>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeTitleInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Ülke: </span>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeCountryInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Şehir: </span>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeCityInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Doğum Tarihi: </span>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeBirthDateInput">
+                        </div>
+                        
+                        
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                        <a href="" class="btn btn-primary" (click)="update()" href="/employees">Değişiklikleri Kaydet</a>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              
+              <a  class="btn btn-sm btn-outline-warning col-4" data-bs-toggle="modal" data-bs-target="#exampleModal" id="updateButton"(click)="showUpdate(employee)">Güncelle</a>
+             
+              <a data-bs-toggle="modal" data-bs-target="#exampleModal4" id="detailsButton" (click)="showDetails(employee)" class="btn btn-sm btn-outline-success col-4" id="details" >Detaylar</a>
+              <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Detaylar</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div>{{employee.firstName}}</div>
+                      <div>{{employee.lastName}}</div>
+                      <div>{{employee.country}}</div>
+                      <div>{{employee.city}}</div>
+                      <div>{{employee.birthDate}}</div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      
+      </div>
+    </div>
+  
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Yeni Ürün Ekle</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          
+            <div class="modal-body">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">İsim: </span>
+                <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="addemployeeFirstNameInput">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Soyisim: </span>
+                <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="addemployeeLastNameInput">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Ünvan: </span>
+                <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="addemployeeTitleInput">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Ülke </span>
+                <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="addemployeeCountryInput">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Şehir </span>
+                <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="addemployeeCityInput">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Doğum Tarihi: </span>
+                <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="addemployeeBirthDateInput">
+              </div>
+            
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">Resim Url: </span>
+              <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="addImageInput">
+            </div>
+            
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+            <a  class="btn btn-primary" (click)="addEmployee()" href="/employees">Ekle</a>
+            
+          
+        </div>
+      </div>
+    </div>
+    </div>
+</div>
+<div *ngIf="lan==2">
+  <div >
+    <div class="bg-light p-4">
+      <nav class="navbar navbar-light bg-light">
+        <div class="dropdown " id="wgtmsr">
+          <a class="btn btn-outline-secondary dropdown-toggle" href="#"  id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
+            Advanced Sorting
+          </a>
+          <ul class="dropdown-menu  " aria-labelledby="navbarDropdown" style=" width:150px !important;">
+    
+            <li >
+              <label class="form-check-label dropdown-item " for="sortForNameEmployee"  style="display: inline;font-size: 12px;">
+                Name(A-Z)</label>
+                
+                <input class="form-check-input me-0 " type="checkbox" value=""  id="sortForNameEmployee"(click)="sortForName()" >
+            </li>
+            <li >
+              <label class="form-check-label dropdown-item" for="sortForNameReverseEmployee" style="display: inline; font-size: 12px;" >Name(Z-A)</label>
+                <input class="form-check-input " type="checkbox" value=""  id="sortForNameReverseEmployee" (click)="sortForNameReverse()" >
+            </li>
+            <li >
+              <label class="form-check-label dropdown-item" for="sortForTitle" style="display: inline; font-size: 12px;">
+                Title(A-Z)</label>
+                <input class="form-check-input " type="checkbox" value="" id="sortForTitle" (click)="sortForTitle()" >
+            </li>
+            <li >
+            <label class="form-check-label dropdown-item" for="sortForTitleReverse" style="display: inline;font-size: 12px;">Title(Z-A)</label>
+              <input class="form-check-input " type="checkbox" value="" id="sortForTitleReverse"  (click)="sortForTitleReverse()" >
+          </li>
+          <li >
+            <label class="form-check-label dropdown-item" for="sortForBirthDate" style="display: inline;font-size: 12px;">Birth Date</label>
+              <input class="form-check-input " type="checkbox" value="" id="sortForBirthDate"  (click)="sortForBirthDate()" >
+          </li>
+          <li >
+            <label class="form-check-label dropdown-item" for="sortForCountry" style="display: inline;font-size: 12px;">Country</label>
+              <input class="form-check-input " type="checkbox" value="" id="sortForCountry"  (click)="sortForCountry()" >
+          </li>
+          <li >
+            <label class="form-check-label dropdown-item" for="sortForCity" style="display: inline;font-size: 12px;">City</label>
+              <input class="form-check-input " type="checkbox" value="" id="sortForCity"  (click)="sortForCity()" >
+          </li>
+            
+            
+          </ul>
+        </div>
+        
+        <div class="btn-group" role="group" id="view">
+          View:
+          
+          <button class="btn btn-white" type="button"(click)="onDisplayModeChange(1)"
+                        [ngClass]="{'btn-primary active': displayMode === 1}" >
+                        <i class="fa fa-th"></i>
+                        
+                        
+          </button>
+          <button class="btn btn-white" type="button"  (click)="onDisplayModeChange(2)"
+                        [ngClass]="{'btn-primary active': displayMode === 2}" >
+                        
+                        <i class="fa fa-th"></i>
+          </button>
+          <button class="btn btn-white" type="button"  (click)="onDisplayModeChange(3)"
+                        [ngClass]="{'btn-primary active': displayMode === 3}" >
+                        <i class="fa fa-list"></i>
+          </button>
+         </div>
+         <button type="button"class="btn btn-outline-secondary" (click)="saveOptions()">Save Search Options</button>
+         <button type="button" class="btn btn-outline-secondary" (click)="clearOptions()">Clean Search Options</button>
+         <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal2" >
+          <i class="fa fa-plus" style="font-size:35px;" ></i>
+         </button>
+      </nav>
+    </div>
+  </div>
+ 
+  <div *ngIf="displayMode===1" class="row">
+  <div class="mb-3 mt-2" id="searchBox">
+      <input  class="form-control" id="productName" placeholder="Search.." [(ngModel)]="filterText"/>
+      <div *ngIf="filterText" class="form-text">You are searching <strong>{{filterText}}</strong></div>
+    </div>
+    <div class="row">
+      <ng-template #noProduct>
+        <div class="alert alert-primary" role="alert">
+          There is No Product
+        </div>
+      </ng-template>
+      <div *ngFor="let employee of employees | employeeFilter:filterText; let i=index" class="card mx-auto" id="productbox" style="width: 21rem;">
+        <div class="row d-flex align-items-center justify-content-center" >
+          <img src="http://localhost:3030/api/employees/images/{{employee.imageName}}" class="img-thumbnail col-6" alt="...">
+          <div *ngIf="employee.title=== 'Sales Representative'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #ffcc00 !important;">
+            {{employee.title}}
+          </div>
+          <div *ngIf="employee.title=== 'Vice President, Sales'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #cc3300 !important;">
+            {{employee.title}}
+          </div>
+          <div *ngIf="employee.title=== 'Sales Manager'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #15C5F0 !important;">
+            {{employee.title}}
+          </div>
+          <div *ngIf="employee.title=== 'Inside Sales Coordinator'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #0D6EFD !important;">
+            {{employee.title}}
+          </div>
+        </div>
+        
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{employee.firstName}} {{employee.lastName}}  </h5>
+          
+          <p class="card-text">{{employee.country}}</p>
+          <p class="card-text">{{employee.city}}</p>
+          <p class="card-text">{{employee.birthDate}}</p>
+          <div class="d-flex flex-row justify-content-center mt-auto">
+          
+            <a data-bs-toggle="modal" data-bs-target="#exampleModal3" id="deleteButton" (click)="delete(employee)" class="btn btn-sm btn-outline-danger col-4" >Delete</a>
+
+            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
+                    <a  class="btn btn-danger" (click)="delete(employee)" href="/products">delete</a>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+           <!-- Button trigger modal -->
+            <!-- Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Update</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Name: </span>
+                        <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="employeeFirstnameInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Lastname: </span>
+                        <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="employeeLastnameInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Title: </span>
+                        <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeTitleInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Country: </span>
+                        <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeCountryInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">City: </span>
+                        <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeCityInput">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Birth Date: </span>
+                        <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeBirthDateInput">
+                      </div>
+                      
+                      
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <a  class="btn btn-primary" (click)="update()" href="/employees" >Save changes</a>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            
+            <a  class="btn btn-sm btn-outline-warning col-4" data-bs-toggle="modal" data-bs-target="#exampleModal" id="updateButton"(click)="showUpdate(employee)">Update</a>
+           
+            <a data-bs-toggle="modal" data-bs-target="#exampleModal4" id="detailsButton" (click)="showDetails(employee)" class="btn btn-sm btn-outline-success col-4" id="details" >Details</a>
+            <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div>{{employee.firstName}}</div>
+                    <div>{{employee.lastName}}</div>
+                    <div>{{employee.country}}</div>
+                    <div>{{employee.city}}</div>
+                    <div>{{employee.birthDate}}</div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button> 
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+          </div>
+          
+        </div>
+      </div>
+    
+    </div>
+  </div>
+  
+    <div *ngIf="displayMode===2" class="row">
+      <div class="mb-3 mt-2" id="searchBox">
+        <input  class="form-control" id="productName" placeholder="Search.." [(ngModel)]="filterText"/>
+        <div *ngIf="filterText" class="form-text">You are searching <strong>{{filterText}}</strong></div>
+      </div>
+      <div class="row">
+        <ng-template #noProduct>
+          <div class="alert alert-primary" role="alert">
+            There is No Product
+          </div>
+        </ng-template>
+        <div *ngFor="let employee of employees  | employeeFilter:filterText; let i=index"   id="productbox"  class="card mb-3" style="max-width: 50%;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <div class="row d-flex align-items-center justify-content-center" >
+                <img src="http://localhost:3030/api/employees/images/{{employee.imageName}}" class="img-thumbnail col-6" alt="...">
+                <div *ngIf="employee.title=== 'Sales Representative'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #ffcc00 !important;">
+                  {{employee.title}}
+                </div>
+                <div *ngIf="employee.title=== 'Vice President, Sales'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #cc3300 !important;">
+                  {{employee.title}}
+                </div>
+                <div *ngIf="employee.title=== 'Sales Manager'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #15C5F0 !important;">
+                  {{employee.title}}
+                </div>
+                <div *ngIf="employee.title=== 'Inside Sales Coordinator'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #0D6EFD !important;">
+                  {{employee.title}}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{employee.firstName}} {{employee.lastName}}  </h5>
+                
+                <p class="card-text">{{employee.country}}</p>
+                <p class="card-text">{{employee.city}}</p>
+                <p class="card-text">{{employee.birthDate}}</p>
+                
+                <a data-bs-toggle="modal" data-bs-target="#exampleModal3" id="deleteButton" (click)="delete(employee)" class="btn btn-sm btn-outline-danger col-4" >Delete</a>
+
+            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
+                    <a  class="btn btn-danger" (click)="delete(employee)" href="/products">delete</a>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Name: </span>
+                          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="employeeFirstnameInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Lastname: </span>
+                          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="employeeLastnameInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Title: </span>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeTitleInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Country: </span>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeCountryInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">City: </span>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeCityInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Birth Date: </span>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeBirthDateInput">
+                        </div>
+                        
+                        
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a href="" class="btn btn-primary" (click)="update()" href="/employees">Save changes</a>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              
+              <a  class="btn btn-sm btn-outline-warning col-4" data-bs-toggle="modal" data-bs-target="#exampleModal" id="updateButton"(click)="showUpdate(employee)">Update</a>
+             
+            <a data-bs-toggle="modal" data-bs-target="#exampleModal4" id="detailsButton" (click)="showDetails(employee)" class="btn btn-sm btn-outline-success col-4" id="details" >Details</a>
+            <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div>{{employee.firstName}}</div>
+                    <div>{{employee.lastName}}</div>
+                    <div>{{employee.country}}</div>
+                    <div>{{employee.city}}</div>
+                    <div>{{employee.birthDate}}</div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button> 
+                  </div>
+                </div>
+              </div>
+            </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      
+      </div>
+    </div>
+  
+  
+    <div *ngIf="displayMode===3" class="row">
+      <div class="mb-3 mt-2" id="searchBox">
+        <input  class="form-control" id="productName" placeholder="Search.." [(ngModel)]="filterText"/>
+        <div *ngIf="filterText" class="form-text">You are searching <strong>{{filterText}}</strong></div>
+      </div>
+      <div class="row">
+        <ng-template #noProduct>
+          <div class="alert alert-primary" role="alert">
+            There is No Product
+          </div>
+        </ng-template>
+        <div *ngFor="let employee of employees  | employeeFilter:filterText; let i=index"   id="productbox"  class="card mb-3" style="max-width: 100%;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <div class="row d-flex align-items-center justify-content-center" >
+                <img src="http://localhost:3030/api/employees/images/{{employee.imageName}}" class="img-thumbnail col-6" alt="...">
+                <div *ngIf="employee.title=== 'Sales Representative'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #ffcc00 !important;">
+                  {{employee.title}}
+                </div>
+                <div *ngIf="employee.title=== 'Vice President, Sales'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #cc3300 !important;">
+                  {{employee.title}}
+                </div>
+                <div *ngIf="employee.title=== 'Sales Manager'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #15C5F0 !important;">
+                  {{employee.title}}
+                </div>
+                <div *ngIf="employee.title=== 'Inside Sales Coordinator'" class="badge bg-primary text-wrap col-6" style="width: 6rem; margin-left: 5%; background-color: #0D6EFD !important;">
+                  {{employee.title}}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{employee.firstName}} {{employee.lastName}}  </h5>
+                
+                <p class="card-text">{{employee.country}}</p>
+                <p class="card-text">{{employee.city}}</p>
+                <p class="card-text">{{employee.birthDate}}</p>
+                
+                <a data-bs-toggle="modal" data-bs-target="#exampleModal3" id="deleteButton" (click)="delete(employee)" class="btn btn-sm btn-outline-danger col-4" >Delete</a>
+
+            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
+                    <a  class="btn btn-danger" (click)="delete(employee)" href="/products">delete</a>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Name: </span>
+                          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="employeeFirstnameInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Lastname: </span>
+                          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="employeeLastnameInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Title: </span>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeTitleInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Country: </span>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeCountryInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">City: </span>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeCityInput">
+                        </div>
+                        <div class="input-group mb-3">
+                          <span class="input-group-text" id="basic-addon1">Birth Date: </span>
+                          <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="employeeBirthDateInput">
+                        </div>
+                        
+                        
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a href="" class="btn btn-primary" (click)="update()" href="/employees">Save changes</a>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              
+              <a  class="btn btn-sm btn-outline-warning col-4" data-bs-toggle="modal" data-bs-target="#exampleModal" id="updateButton"(click)="showUpdate(employee)">Update</a>
+              
+            <a data-bs-toggle="modal" data-bs-target="#exampleModal4" id="detailsButton" (click)="showDetails(employee)" class="btn btn-sm btn-outline-success col-4" id="details" >Details</a>
+            <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div>{{employee.firstName}}</div>
+                    <div>{{employee.lastName}}</div>
+                    <div>{{employee.country}}</div>
+                    <div>{{employee.city}}</div>
+                    <div>{{employee.birthDate}}</div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button> 
+                  </div>
+                </div>
+              </div>
+            </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      
+      </div>
+    </div>
+  
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add New Product</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          
+            <div class="modal-body">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Name: </span>
+                <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="addemployeeFirstNameInput">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Lastname: </span>
+                <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="addemployeeLastNameInput">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Title: </span>
+                <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="addemployeeTitleInput">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Country: </span>
+                <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="addemployeeCountryInput">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">City: </span>
+                <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="addemployeeCityInput">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Birth Date: </span>
+                <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="addemployeeBirthDateInput">
+              </div>
+            
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">Image Url: </span>
+              <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="addImageInput">
+            </div>
+            
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <a  class="btn btn-primary" (click)="addEmployee()" href="/employees">Add</a>
+            
+          
+        </div>
+      </div>
+    </div>
+    </div>
+</div>
